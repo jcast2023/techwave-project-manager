@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-// ¡IMPORTANTE! Asegúrate de que esta importación sea de tu paquete de entidades
-// import org.springframework.scheduling.config.Task; // <-- ¡ELIMINA O COMENTA ESTA LÍNEA!
-// Y asegúrate de que la clase Task referenciada sea com.cibertec.entity.Task
+
 
 @Entity
 @Table(name = "proyectos")

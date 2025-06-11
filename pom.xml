@@ -41,18 +41,18 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.12.5</version> <!-- Usar la última versión estable -->
+			<version>0.11.5</version> <!-- Usar la última versión estable -->
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.12.5</version> <!-- Usar la misma versión que jjwt-api -->
+			<version>0.11.5</version> <!-- Usar la misma versión que jjwt-api -->
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
-			<version>0.12.5</version> <!-- Usar la misma versión que jjwt-api -->
+			<version>0.11.5</version> <!-- Usar la misma versión que jjwt-api -->
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
