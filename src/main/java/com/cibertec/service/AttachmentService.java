@@ -11,9 +11,6 @@ public interface AttachmentService {
 	List<AttachmentDTO> getAllAttachments();
 	AttachmentDTO updateAttachment(Long id, AttachmentDTO attachmentDTO);
 	void deleteAttachment(Long id);
-	List<AttachmentDTO> getAttachmentsByProjectId(Long projectId);
-	List<AttachmentDTO> getAttachmentsByTaskId(Long taskId);
-	List<AttachmentDTO> getAttachmentsByUploadedById(Long uploadedById);
-	List<AttachmentDTO> getAttachmentsByContentType(String contentType);
+	
 	
 }

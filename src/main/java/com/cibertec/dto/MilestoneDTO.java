@@ -16,7 +16,8 @@ public class MilestoneDTO {
     private String name;
     private String description;
     private LocalDate dueDate;
-    private Boolean completed;
-    private Long projectId; // Solo el ID del proyecto
+    private Boolean completed; // <-- ¡Mantener como Boolean!
+    private Long projectId;
     private LocalDateTime createdAt;
+    private LocalDateTime lastUpdated; // <-- Añadido para reflejar la entidad
 }

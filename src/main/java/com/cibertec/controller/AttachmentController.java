@@ -2,6 +2,7 @@ package com.cibertec.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,11 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cibertec.dto.AttachmentDTO;
-import com.cibertec.service.AttachmentService;
+import com.cibertec.service.AttachmentService; // Importa la INTERFAZ
 
 import jakarta.validation.Valid;
 
@@ -25,6 +25,8 @@ public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
+    // Inyección por constructor (recomendada)
+    @Autowired
     public AttachmentController(AttachmentService attachmentService) {
         this.attachmentService = attachmentService;
     }
@@ -61,6 +63,9 @@ public class AttachmentController {
     @GetMapping
     public ResponseEntity<List<AttachmentDTO>> getAllAttachments() {
         List<AttachmentDTO> attachments = attachmentService.getAllAttachments();
+        if (attachments.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Devuelve 204 No Content si no hay adjuntos
+        }
         return ResponseEntity.ok(attachments);
     }
 
@@ -86,54 +91,8 @@ public class AttachmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAttachment(@PathVariable Long id) {
         attachmentService.deleteAttachment(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content para eliminación exitosa
     }
 
-    /**
-     * Busca archivos adjuntos por el ID del proyecto.
-     * GET /api/attachments/search/by-project/{projectId}
-     * @param projectId El ID del proyecto.
-     * @return Lista de AttachmentDTOs que coinciden.
-     */
-    @GetMapping("/search/by-project/{projectId}")
-    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByProjectId(@PathVariable Long projectId) {
-        List<AttachmentDTO> attachments = attachmentService.getAttachmentsByProjectId(projectId);
-        return ResponseEntity.ok(attachments);
-    }
-
-    /**
-     * Busca archivos adjuntos por el ID de la tarea.
-     * GET /api/attachments/search/by-task/{taskId}
-     * @param taskId El ID de la tarea.
-     * @return Lista de AttachmentDTOs que coinciden.
-     */
-    @GetMapping("/search/by-task/{taskId}")
-    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByTaskId(@PathVariable Long taskId) {
-        List<AttachmentDTO> attachments = attachmentService.getAttachmentsByTaskId(taskId);
-        return ResponseEntity.ok(attachments);
-    }
-
-    /**
-     * Busca archivos adjuntos subidos por un usuario.
-     * GET /api/attachments/search/by-uploader/{uploadedById}
-     * @param uploadedById El ID del usuario que subió el archivo.
-     * @return Lista de AttachmentDTOs que coinciden.
-     */
-    @GetMapping("/search/by-uploader/{uploadedById}")
-    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByUploadedById(@PathVariable Long uploadedById) {
-        List<AttachmentDTO> attachments = attachmentService.getAttachmentsByUploadedById(uploadedById);
-        return ResponseEntity.ok(attachments);
-    }
-
-    /**
-     * Busca archivos adjuntos por tipo de contenido.
-     * GET /api/attachments/search/by-content-type?contentType=valor
-     * @param contentType El tipo de contenido del archivo.
-     * @return Lista de AttachmentDTOs que coinciden.
-     */
-    @GetMapping("/search/by-content-type")
-    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByContentType(@RequestParam String contentType) {
-        List<AttachmentDTO> attachments = attachmentService.getAttachmentsByContentType(contentType);
-        return ResponseEntity.ok(attachments);
-    }
+    // ELIMINADO: No se incluye el método de búsqueda por proyecto si solo usarás los 5 métodos principales.
 }

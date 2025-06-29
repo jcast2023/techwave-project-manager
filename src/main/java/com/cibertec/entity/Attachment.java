@@ -1,8 +1,10 @@
-package com.cibertec.entity;
+package com.cibertec.entity; // Manteniendo el paquete 'cibertec'
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode; // Importar esta anotación
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -21,10 +23,10 @@ public class Attachment {
     private String fileName;
 
     @Column(name = "tipo_contenido", length = 100)
-    private String contentType; // Ej: application/pdf, image/jpeg
+    private String contentType;
 
     @Column(name = "ruta_almacenamiento", nullable = false, length = 255)
-    private String storagePath; // URL de S3 o ruta local
+    private String storagePath;
 
     @Column(name = "tamano_bytes")
     private Long sizeBytes;
@@ -35,13 +37,16 @@ public class Attachment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_subida_id", nullable = false)
+    @EqualsAndHashCode.Exclude // Excluir para evitar ciclos con User (si User tiene Set<Attachment>)
     private User uploadedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tarea_id")
-    private Task task; // Puede adjuntarse a una tarea
+    @EqualsAndHashCode.Exclude // Excluir para evitar ciclos con Task (si Task tiene Set<Attachment>)
+    private Task task;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proyecto_id")
-    private Project project; // Puede adjuntarse a un proyecto
+    @EqualsAndHashCode.Exclude // Excluir para evitar ciclos con Project (si Project tiene Set<Attachment>)
+    private Project project;
 }

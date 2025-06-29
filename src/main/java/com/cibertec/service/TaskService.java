@@ -15,5 +15,6 @@ public interface TaskService {
 	List<TaskDTO> getTasksByAssignedToId(Long assignedToId);
 	List<TaskDTO> getTasksByStatus(String status);
 	List<TaskDTO> getTasksByPriority(String priority);
-	
+	// Nuevo método para verificar si una tarea está asignada a un usuario específico
+    boolean isTaskAssignedToUser(Long taskId, String username);
 }

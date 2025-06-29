@@ -3,7 +3,11 @@ package com.cibertec.service;
 import java.util.List;
 import java.util.Optional;
 
+
+
 import com.cibertec.dto.UserDTO;
+import com.cibertec.entity.User;
+
 
 public interface UserService {
 	
@@ -12,7 +16,7 @@ public interface UserService {
 	List<UserDTO> getAllUsers();
 	UserDTO updateUser(Long id, UserDTO userDTO);
 	void deleteUser(Long id);
-	Optional<UserDTO> findByUsername(String username);
-	Optional<UserDTO> findByEmail(String email);
+
+	Optional<UserDTO> findOneByEmail(String email);
 
 }

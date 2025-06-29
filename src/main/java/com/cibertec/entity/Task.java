@@ -1,8 +1,10 @@
-package com.cibertec.entity;
+package com.cibertec.entity; // Manteniendo el paquete 'cibertec'
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode; // Importar esta anotación
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -32,18 +34,20 @@ public class Task {
     private LocalDate dueDate;
 
     @Column(name = "estado", nullable = false, length = 50)
-    private String status = "PENDIENTE"; // Ej: PENDIENTE, EN_PROGRESO, REVISIÓN, COMPLETADA
+    private String status = "PENDIENTE";
 
     @Column(name = "prioridad", nullable = false, length = 20)
-    private String priority = "MEDIA"; // Ej: BAJA, MEDIA, ALTA, CRÍTICA
+    private String priority = "MEDIA";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proyecto_id", nullable = false)
+    @EqualsAndHashCode.Exclude // Excluir para evitar ciclos con Project
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asignado_a_usuario_id")
-    private User assignedTo; // Puede ser nulo si la tarea no está asignada todavía
+    @EqualsAndHashCode.Exclude // Excluir para evitar ciclos con User (si User tiene Set<Task>)
+    private User assignedTo;
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", updatable = false)
@@ -54,5 +58,6 @@ public class Task {
     private LocalDateTime lastUpdated;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude // Excluir para evitar ConcurrentModificationException/ciclos
     private Set<Attachment> attachments = new HashSet<>();
 }

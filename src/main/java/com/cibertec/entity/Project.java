@@ -1,9 +1,10 @@
-package com.cibertec.entity;
+package com.cibertec.entity; // Manteniendo el paquete 'cibertec' según tu última confirmación
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode; // Importar esta anotación
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,11 +14,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
 @Entity
 @Table(name = "proyectos")
-@Data
+@Data // Genera getters, setters, toString, equals, hashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Project {
@@ -39,13 +38,14 @@ public class Project {
     private LocalDate expectedEndDate;
 
     @Column(name = "estado", nullable = false, length = 50)
-    private String status = "PENDIENTE"; // Ej: PENDIENTE, EN_PROGRESO, COMPLETADO, CANCELADO
+    private String status = "PENDIENTE";
 
     @Column(name = "presupuesto", precision = 15, scale = 2)
     private BigDecimal budget = BigDecimal.ZERO;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Un proyecto tiene un gerente
-    @JoinColumn(name = "gerente_proyecto_id", nullable = false) // Columna FK en la tabla proyectos
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gerente_proyecto_id", nullable = false)
+    @EqualsAndHashCode.Exclude // Excluir de equals/hashCode para evitar ciclos
     private User projectManager;
 
     @CreationTimestamp
@@ -56,14 +56,17 @@ public class Project {
     @Column(name = "ultima_actualizacion")
     private LocalDateTime lastUpdated;
 
-    // Relaciones (no se mapean directamente en la BD como FKs, pero son relaciones JPA)
+    // Relaciones @OneToMany: DEBEN ser excluidas de equals/hashCode
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Task> tasks = new HashSet<>(); // Ahora 'Task' se referirá a com.cibertec.entity.Task
+    @EqualsAndHashCode.Exclude // Excluir para evitar ConcurrentModificationException/ciclos
+    private Set<Task> tasks = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude // Excluir para evitar ConcurrentModificationException/ciclos
     private Set<Milestone> milestones = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude // Excluir para evitar ConcurrentModificationException/ciclos
     private Set<Attachment> attachments = new HashSet<>();
 
 }

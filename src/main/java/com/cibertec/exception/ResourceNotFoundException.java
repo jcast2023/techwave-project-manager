@@ -1,36 +1,23 @@
 package com.cibertec.exception;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Excepción personalizada para recursos no encontrados.
- * Se mapea automáticamente a un estado HTTP 404 Not Found.
- */
-@ResponseStatus(HttpStatus.NOT_FOUND) // Esto le dice a Spring que devuelva un 404
+@ResponseStatus(HttpStatus.NOT_FOUND) // Esto hace que Spring devuelva un 404 NOT FOUND
 public class ResourceNotFoundException extends RuntimeException {
 
-    private String resourceName;
-    private String fieldName;
-    private Object fieldValue;
-
-    public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-        // Mensaje de error personalizado para la excepción
-        super(String.format("%s no encontrado con %s : '%s'", resourceName, fieldName, fieldValue));
-        this.resourceName = resourceName;
-        this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+    // Constructor sin argumentos (opcional, pero buena práctica)
+    public ResourceNotFoundException() {
+        super();
     }
 
-    // Puedes añadir getters si necesitas acceder a estos campos desde un manejador de excepciones
-    public String getResourceName() {
-        return resourceName;
+    // ¡ESTE ES EL CONSTRUCTOR QUE NECESITAS AGREGAR O VERIFICAR!
+    public ResourceNotFoundException(String message) {
+        super(message); // Llama al constructor de la clase padre (RuntimeException)
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Object getFieldValue() {
-        return fieldValue;
+    // Si también manejas causas (otra excepción):
+    public ResourceNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

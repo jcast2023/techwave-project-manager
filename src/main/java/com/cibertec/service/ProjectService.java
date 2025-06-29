@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.cibertec.dto.ProjectDTO;
+import com.cibertec.dto.TaskDTO;
 
 public interface ProjectService {
 
@@ -12,9 +13,12 @@ public interface ProjectService {
     List<ProjectDTO> getAllProjects();
     ProjectDTO updateProject(Long id, ProjectDTO projectDTO);
     void deleteProject(Long id);
-    List<ProjectDTO> findByNameContainingIgnoreCase(String name);
-    List<ProjectDTO> findByStatus(String status);
-    List<ProjectDTO> findByProjectManagerId(Long projectManagerId);
-    List<ProjectDTO> findByStartDateGreaterThanEqual(LocalDate startDate);
-    List<ProjectDTO> findByExpectedEndDateLessThanEqual(LocalDate expectedEndDate);
+    
+ // Nuevo método para verificar si un usuario es el gerente de un proyecto específico
+    boolean isProjectManager(Long projectId, String username);
+    boolean isProjectManagerOfTask(Long taskId, String username);
+    boolean isProjectManagerForTaskCreation(TaskDTO taskDTO, String username);
+    
+    List<ProjectDTO> findProjectsByNameContainingIgnoreCase(String name);
+    List<ProjectDTO> findProjectsByStartDateGreaterThanEqual(LocalDate date);
 }
